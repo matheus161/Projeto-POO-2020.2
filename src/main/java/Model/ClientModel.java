@@ -18,4 +18,12 @@ public class ClientModel extends PersonModel {
     public ClientModel(){
        super();
     }
+    
+    @Override
+    public String toString(){
+        return "\nid: " + this.getId() + "\nName: " + this.getName() 
+                + "\nEmail: " + this.getEmail() + "\nEndereco: " + this.getAddress()
+                + "\nSexo: " + this.getSex() + "\nCPF: " + this.getCpf()
+                + "\nTelefone: " + this.getTel() + "\nData: " + this.getDate();
+    }
 }

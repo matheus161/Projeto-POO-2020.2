@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Matheus
  */
-public abstract class PersonModel {
+public abstract class PersonModel implements Serializable {
     private int id;
     private String name;
     private String email;
