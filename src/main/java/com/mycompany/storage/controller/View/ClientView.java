@@ -20,6 +20,7 @@ public class ClientView extends javax.swing.JFrame {
     public static int btnChoose = -1;
     
     ClientController clController = new ClientController();
+    ArrayList<ClientModel> clientList = new ArrayList();
     
     public void LoadClientTable() {       
         
@@ -30,12 +31,12 @@ public class ClientView extends javax.swing.JFrame {
         // Criando um modelo padrao
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         
-        // Pegando a minha lista deserelizada
-        ArrayList<ClientModel> clientList = clController.index();
+        clientList = clController.index();
         
         // Dizendo o conteudo das minhas linhas a partir 
         // das colunas e de cada elemento da minha lista 
         String sex;
+        System.out.println("SIZE " + clientList.size());
         for(int i=0; i<clientList.size(); i++){
             if (clientList.get(i).getSex() == 'M')
                 sex = "Masculino";
@@ -107,7 +108,6 @@ public class ClientView extends javax.swing.JFrame {
         btnRegisterForm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         btnRegisterForm.setForeground(new java.awt.Color(255, 255, 255));
         btnRegisterForm.setText("Registrar");
-        btnRegisterForm.setActionCommand("Registrar");
         btnRegisterForm.setBorder(null);
         btnRegisterForm.setContentAreaFilled(false);
         btnRegisterForm.setOpaque(true);
@@ -122,7 +122,7 @@ public class ClientView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "E-mail", "Endereço", "Sexo", "CPF", "Telefone", "Nascimento"
+                "ID", "Nome", "E-mail", "Endereço", "Sexo", "CPF", "Telefone", " Nascimento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -134,9 +134,6 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(clientTable);
-        if (clientTable.getColumnModel().getColumnCount() > 0) {
-            clientTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        }
 
         btnRefresh.setBackground(new java.awt.Color(102, 0, 102));
         btnRefresh.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -170,6 +167,11 @@ public class ClientView extends javax.swing.JFrame {
         btnRemove.setBorder(null);
         btnRemove.setContentAreaFilled(false);
         btnRemove.setOpaque(true);
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -240,6 +242,22 @@ public class ClientView extends javax.swing.JFrame {
         else
             new ClientForm(this, true).setVisible(true);        
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        index = clientTable.getSelectedRow();
+        btnChoose = 1;
+        if (index < 0)
+            JOptionPane.showMessageDialog(rootPane, "Selecione um cliente");
+        
+        // Remove da Lista
+        clientList.remove(index);
+        
+        // Serializando a lista sem aquela posicao
+        clController.store(clientList);
+        
+        JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso");
+        LoadClientTable();
+    }//GEN-LAST:event_btnRemoveActionPerformed
     
     /**
      * @param args the command line arguments

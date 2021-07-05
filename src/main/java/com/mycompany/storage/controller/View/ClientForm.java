@@ -18,7 +18,9 @@ import java.util.ArrayList;
  */
 public class ClientForm extends javax.swing.JDialog {
     ClientController clController = new ClientController();
-
+    ArrayList<ClientModel> clientList = new ArrayList();
+    
+    
     /**
      * Creates new form ClientForm
      */
@@ -310,42 +312,67 @@ public class ClientForm extends javax.swing.JDialog {
         dispose();
     }
     
+    private ClientModel fillDataForm() {
+        // Preenchendo um objeto do tipo Client
+        ClientModel client = new ClientModel(generateID(), nameTxt.getText(), emailTxt.getText(),
+        enderecoTxt.getText(), getSex(), cpfTxt.getText(), telTxt.getText(),
+        dateTxt.getText());
+        
+        return client;
+    }
+    
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         int id;
         char sex = getSex();
-        ClientModel client = null;
+        
+        // Criando o objeto que sera preenchido
+        ClientModel client = new ClientModel();
+        
+        // Preenchendo o objeto com os valores
+        // dos inputs do form
+        client = fillDataForm();
+        
+        // Pegando a lista que está sendo manipulada
+        clientList = clController.index();
+        
         // Se o botao apertado foi o de registrar
         // ele irá fazer um cadastro
         if (ClientView.btnChoose == 0){
-            id = generateID();
-        
-            // Preenchendo um objeto do tipo Client
-            client = new ClientModel(id, nameTxt.getText(), emailTxt.getText(),
-            enderecoTxt.getText(), sex, cpfTxt.getText(), telTxt.getText(),
-            dateTxt.getText());
-
-            clController.store(client);
+            
+            // Adicionando o objeto a lista
+            clientList.add(client);
+            
+            // Chamando o metodo sotore
+            clController.store(clientList);
+            
             JOptionPane.showMessageDialog(rootPane, "Cliente cadastrado com sucesso");
-                
+            
+            // Fechando o formulario e destruindo o objeto
             closeForm();
         } else { // Senão ele irá atualizar
-            // Pegando a lista
-            ArrayList<ClientModel> clientList = clController.index();
-            id = clientList.get(ClientView.index).getId();
             
-            // Preenchendo o objeto
-            client = new ClientModel(id, nameTxt.getText(), emailTxt.getText(),
-            enderecoTxt.getText(), sex, cpfTxt.getText(), telTxt.getText(),
-            dateTxt.getText());
+            // Passando o id do cliente atual
+            client.setId(clientList.get(ClientView.index).getId());
             
-            // Alterando o objeto naquela posicao
-            //clController.update(client, ClientView.index);
+            // Com um objeto preenchido eu passo o que eu preciso para
+            // o objeto naquela determinada posicao da lista de clientes
+            clientList.get(ClientView.index).setName(client.getName());
+            clientList.get(ClientView.index).setEmail(client.getEmail());
+            clientList.get(ClientView.index).setAddress(client.getAddress());
+            clientList.get(ClientView.index).setSex(client.getSex());
+            clientList.get(ClientView.index).setCpf(client.getCpf());
+            clientList.get(ClientView.index).setTel(client.getTel());
+            clientList.get(ClientView.index).setDate(client.getDate()); 
+            
+            // Serializando pa lista com o cliente editado
+            clController.store(clientList);
             
             JOptionPane.showMessageDialog(rootPane, "Cliente atualizado com sucesso");
-                
+            
+            // Fechando o formulario e destruindo o objeto
             closeForm();
-        }  
-        //JOptionPane.showMessageDialog(rootPane, currentClient);
+
+        }   
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
