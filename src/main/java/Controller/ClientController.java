@@ -26,9 +26,8 @@ public class ClientController {
             
     }
  
-    public void store(ClientModel client) {
-        clientList.add(client);
-        
+    public void store(ArrayList<ClientModel> client) {
+                
         try {
             /*
              * A Classe FileOutputStream é responsável por criar
@@ -36,44 +35,49 @@ public class ClientController {
              * escrita neste.
              * */
             FileOutputStream fos = new FileOutputStream("client.ser");
-        
+
             /*
              * A Classe ObjectOutputStream escreve os objetos no FileOutputStream
              * */
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
 
+            ObjectOutputStream oos = new ObjectOutputStream(fos); 
+            
             // Gravando um objeto do tipo Client no arquivo client.ser
-            oos.writeObject(clientList);
-
+            oos.writeObject(client);
+            
+            fos.close();
             oos.close();
             System.out.println("Done");
-        
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public ArrayList<ClientModel> index(){
+    public ArrayList index() {
         //ArrayList<ClientModel> Clientlist = new ArrayList<ClientModel>();
+        
         try {
             // Carrega o arquivo
             FileInputStream fin = new FileInputStream("client.ser");
-            
+
             // Responsavel por ler o arquivo
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            
+            ObjectInputStream ois = new ObjectInputStream(fin);   
             clientList = (ArrayList<ClientModel>)ois.readObject();
-            ois.close();
             
-            //for(int i=0; i < Clientlist.size(); i++){
-                //System.out.println(Clientlist.get(i));
+            //for(int i=0; i < clientList.size(); i++){;;
+                //System.out.println(clientList.get(i));
             //}
+            
+            fin.close();
+            ois.close();
             return clientList;
-        } catch (Exception e) {
+        } catch (IOException i) {
+            i.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
+
     
 }
