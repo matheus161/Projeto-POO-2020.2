@@ -10,7 +10,15 @@ import Model.ClientModel;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 import com.mycompany.storage.controller.View.ClientView;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JFormattedTextField;
 
 /**
  *
@@ -27,7 +35,7 @@ public class ClientForm extends javax.swing.JDialog {
     public ClientForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        //fieldFormater();
         // Se o botao apertado foi o de editar
         // retorne o cliente daquela linha
         if (ClientView.btnChoose == 1){
@@ -43,10 +51,98 @@ public class ClientForm extends javax.swing.JDialog {
                 womanCheck.setSelected(true);
             cpfTxt.setText(list.get(ClientView.index).getCpf());
             telTxt.setText(list.get(ClientView.index).getTel());
-            dateTxt.setText(list.get(ClientView.index).getDate());
+            bornDateTxt.setText(list.get(ClientView.index).getDate());
         }
     }
-
+    
+    private int cpfFormat(String cpf){
+        if (cpf.length() < 14){
+            return 0;
+        }
+        return 1;
+    }
+    
+    private int isValidCPF(){
+        if (cpfTxt.getText().equals("000.000.000-00") |
+            cpfTxt.getText().equals("111.111.111-11") |
+            cpfTxt.getText().equals("222.222.222-22") |
+            cpfTxt.getText().equals("333.333.333-33") |
+            cpfTxt.getText().equals("444.444.444-44") |
+            cpfTxt.getText().equals("555.555.555-55") |
+            cpfTxt.getText().equals("666.666.666-66") |
+            cpfTxt.getText().equals("777.777.777-77") |
+            cpfTxt.getText().equals("888.888.888-88") |
+            cpfTxt.getText().equals("999.999.999-99")){
+            JOptionPane.showMessageDialog(null, "Preencha com um CPF valido ");
+            return 0;
+        }
+        
+        return 1;
+    }
+    
+    private boolean isValidEmailAddress(){
+        String email = emailTxt.getText();
+        boolean result = false;
+        
+        if (email != null && email.length() > 0){
+            String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+            Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(email);
+            if (matcher.matches()){
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    private boolean isValidBornDate() {
+        String date = bornDateTxt.getText();
+        try {
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            //Aqui eu converto uma data em LocalDate
+            //e digo que quero no formato do DateTimeFormatter
+            //que criei acima
+            LocalDate dateVerify = LocalDate.parse(date, dtf);
+            //Esse comando pega a data de hoje
+            LocalDate today = LocalDate.now();
+            //Se dataVerificada comparada com hoje é
+            //menor ou igual a zero então retorna verdadeiro
+            return dateVerify.compareTo(today) <= 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    private int isValidFields(){
+        // Verifico se o nome esta vazio ou passui numeros
+        if (!nameTxt.getText().matches("[^0-9]") & nameTxt.getText().matches("^\\d+$")){
+            JOptionPane.showMessageDialog(null, "Preencha o nome corretamente");
+            return 0;
+        }
+        if (nameTxt.getText().length() <= 2 | nameTxt.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Preencha o nome corretamente");
+            return 0;
+        }
+        // Verifico se o endereco esta vazio ou poucos caracteres
+        if (enderecoTxt.getText().equals("") | enderecoTxt.getText().length() <= 3){
+            JOptionPane.showMessageDialog(null, "Preencha o endereco corretamente");
+            return 0;
+        }
+        if (cpfTxt.getText().trim().length() < 14){
+            JOptionPane.showMessageDialog(null, "Preencha o CPF corretamente");
+            return 0;
+        }        
+        if (telTxt.getText().trim().length() < 14){
+            JOptionPane.showMessageDialog(null, "Preencha com um numero valido");
+            return 0;
+        }
+        if (bornDateTxt.getText().trim().length() < 10){
+            JOptionPane.showMessageDialog(null, "Preencha com uma data valida");
+            return 0;
+        }
+        return 1;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,6 +153,7 @@ public class ClientForm extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -67,16 +164,18 @@ public class ClientForm extends javax.swing.JDialog {
         enderecoTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        cpfTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         menCheck = new javax.swing.JRadioButton();
         womanCheck = new javax.swing.JRadioButton();
-        telTxt = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        dateTxt = new javax.swing.JTextField();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        telTxt = new javax.swing.JFormattedTextField();
+        cpfTxt = new javax.swing.JFormattedTextField();
+        bornDateTxt = new javax.swing.JFormattedTextField();
+
+        jFormattedTextField1.setText("jFormattedTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -130,9 +229,6 @@ public class ClientForm extends javax.swing.JDialog {
         jLabel5.setForeground(new java.awt.Color(102, 0, 102));
         jLabel5.setText("Sexo:");
 
-        cpfTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        cpfTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 0, 102));
         jLabel6.setText("CPF:");
@@ -148,9 +244,6 @@ public class ClientForm extends javax.swing.JDialog {
         womanCheck.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         womanCheck.setText("Feminino");
 
-        telTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        telTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
-
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(102, 0, 102));
         jLabel7.setText("Telefone:");
@@ -158,9 +251,6 @@ public class ClientForm extends javax.swing.JDialog {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(102, 0, 102));
         jLabel8.setText("Data Nascimento:");
-
-        dateTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        dateTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
 
         btnSave.setBackground(new java.awt.Color(43, 22, 109));
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -187,6 +277,27 @@ public class ClientForm extends javax.swing.JDialog {
                 btnCancelActionPerformed(evt);
             }
         });
+
+        telTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
+        try {
+            telTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("(##)#####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        cpfTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
+        try {
+            cpfTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        bornDateTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
+        try {
+            bornDateTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -226,7 +337,7 @@ public class ClientForm extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(bornDateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnCancel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -253,16 +364,16 @@ public class ClientForm extends javax.swing.JDialog {
                     .addComponent(womanCheck))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cpfTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(cpfTxt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(telTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(telTxt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dateTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(bornDateTxt))
                 .addGap(18, 18, 18)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -316,7 +427,7 @@ public class ClientForm extends javax.swing.JDialog {
         // Preenchendo um objeto do tipo Client
         ClientModel client = new ClientModel(generateID(), nameTxt.getText(), emailTxt.getText(),
         enderecoTxt.getText(), getSex(), cpfTxt.getText(), telTxt.getText(),
-        dateTxt.getText());
+        bornDateTxt.getText());
         
         return client;
     }
@@ -332,6 +443,23 @@ public class ClientForm extends javax.swing.JDialog {
         // dos inputs do form
         client = fillDataForm();
         
+        // Verificando campos
+        if (isValidFields() == 0 | isValidCPF() == 0){
+            return;
+        }
+        
+        // Validando a data
+        if (isValidBornDate() == false){
+            JOptionPane.showMessageDialog(null, "Preencha um data valida");
+            return;
+        }
+        
+        // Validando o email
+        if (isValidEmailAddress() == false){
+            JOptionPane.showMessageDialog(null, "Preencha com um email valido");
+            return;
+        }
+        
         // Pegando a lista que está sendo manipulada
         clientList = clController.index();
         
@@ -345,7 +473,7 @@ public class ClientForm extends javax.swing.JDialog {
             // Chamando o metodo sotore
             clController.store(clientList);
             
-            JOptionPane.showMessageDialog(rootPane, "Cliente cadastrado com sucesso");
+            JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso");
             
             // Fechando o formulario e destruindo o objeto
             closeForm();
@@ -364,10 +492,10 @@ public class ClientForm extends javax.swing.JDialog {
             clientList.get(ClientView.index).setTel(client.getTel());
             clientList.get(ClientView.index).setDate(client.getDate()); 
             
-            // Serializando pa lista com o cliente editado
+            // Serializando na lista com o cliente editado
             clController.store(clientList);
             
-            JOptionPane.showMessageDialog(rootPane, "Cliente atualizado com sucesso");
+            JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso");
             
             // Fechando o formulario e destruindo o objeto
             closeForm();
@@ -380,9 +508,6 @@ public class ClientForm extends javax.swing.JDialog {
         dispose();        
     }//GEN-LAST:event_btnCancelActionPerformed
     
-    private void formatField(){
-        //MaskFormatter
-    }
     /**
      * @param args the command line arguments
      */
@@ -426,13 +551,14 @@ public class ClientForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField bornDateTxt;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JTextField cpfTxt;
-    private javax.swing.JTextField dateTxt;
+    private javax.swing.JFormattedTextField cpfTxt;
     private javax.swing.JTextField emailTxt;
     private javax.swing.JTextField enderecoTxt;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -445,7 +571,7 @@ public class ClientForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton menCheck;
     private javax.swing.JTextField nameTxt;
-    private javax.swing.JTextField telTxt;
+    private javax.swing.JFormattedTextField telTxt;
     private javax.swing.JRadioButton womanCheck;
     // End of variables declaration//GEN-END:variables
 }

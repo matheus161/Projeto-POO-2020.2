@@ -36,7 +36,6 @@ public class ClientView extends javax.swing.JFrame {
         // Dizendo o conteudo das minhas linhas a partir 
         // das colunas e de cada elemento da minha lista 
         String sex;
-        System.out.println("SIZE " + clientList.size());
         for(int i=0; i<clientList.size(); i++){
             if (clientList.get(i).getSex() == 'M')
                 sex = "Masculino";
@@ -44,7 +43,7 @@ public class ClientView extends javax.swing.JFrame {
             
             Object rows[] = new Object[]{clientList.get(i).getId(),
             clientList.get(i).getName(), clientList.get(i).getEmail(),
-            sex, clientList.get(i).getCpf(),
+            clientList.get(i).getAddress(), sex, clientList.get(i).getCpf(),
             clientList.get(i).getTel(), clientList.get(i).getDate()};
             model.addRow(rows);
         }
@@ -88,7 +87,7 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("                                                      Quadro de Funciários");
+        jLabel1.setText("                                                      Quadro de Funcionários");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -122,7 +121,7 @@ public class ClientView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Nome", "E-mail", "Endereço", "Sexo", "CPF", "Telefone", " Nascimento"
+                "ID", "Nome", "E-mail", "Endereço", "Sexo", "CPF", "Telefone", "Nascimento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
