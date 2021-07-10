@@ -122,7 +122,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="                                                      Quadro de Funcion&#xe1;rios"/>
+                <Property name="text" type="java.lang.String" value="                                                  Quadro de Funcion&#xe1;rios"/>
               </Properties>
             </Component>
           </SubComponents>

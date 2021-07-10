@@ -32,6 +32,10 @@ public class ClientView extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         
         clientList = clController.index();
+        if (clientList == null){
+            
+            return;
+        }
         
         // Dizendo o conteudo das minhas linhas a partir 
         // das colunas e de cada elemento da minha lista 
@@ -87,7 +91,7 @@ public class ClientView extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("                                                      Quadro de Funcionários");
+        jLabel1.setText("                                                  Quadro de Funcionários");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
