@@ -185,7 +185,7 @@ public class ClientForm extends javax.swing.JDialog {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("                         Funcionário");
+        jLabel1.setText("                           Funcionário");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -474,9 +474,7 @@ public class ClientForm extends javax.swing.JDialog {
             clController.store(clientList);
             
             JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso");
-            
-            // Fechando o formulario e destruindo o objeto
-            closeForm();
+
         } else { // Senão ele irá atualizar
             
             // Passando o id do cliente atual
@@ -496,11 +494,9 @@ public class ClientForm extends javax.swing.JDialog {
             clController.store(clientList);
             
             JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso");
-            
-            // Fechando o formulario e destruindo o objeto
-            closeForm();
-
-        }   
+        }
+        // Fechando o formulario e destruindo o objeto
+        closeForm();         
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed

@@ -85,7 +85,6 @@ public class SaleView extends javax.swing.JFrame {
         reloadComboBoxClient();
         LoadProductTable();
         LoadSaleTable();
-        generateID();
     }
     
     private void reloadComboBoxClient() {
