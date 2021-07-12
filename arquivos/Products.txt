@@ -1,1 +1,1 @@
-[0;5;Celular;1500.0;Samsung Galaxy, 1;2;Celular;3000.0;Iphone, 2;3;Acessorio;35.0;Fone Samsung]
+[0;5;Celular;1500.0;Samsung Galaxy, 1;2;Celular;3000.0;Iphone, 2;3;Acessorio;35.0;Fone Samsung, 3;10;Smartphone;8999.0;Iphone 12 Pro Max 256 GB]
