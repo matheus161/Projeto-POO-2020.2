@@ -177,7 +177,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_clientBtnActionPerformed
 
     private void shopBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shopBtnActionPerformed
-       StoreView store = new StoreView();
+       SaleView store = new SaleView();
        store.setVisible(true);
     }//GEN-LAST:event_shopBtnActionPerformed
 

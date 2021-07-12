@@ -1,1 +1,1 @@
-[3;5;celular;0.5;celular]
+[0;5;celular;0.5;celular], 1;5;Celular;4500.0;Galaxy S21+], 2;5;Celular;4500.0;Iphone 12], 6;5;Celular;3500.0;Google Pixel XL]

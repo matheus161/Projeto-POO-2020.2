@@ -97,6 +97,14 @@ public class ProductController {
     }
     
     public static void main(String[] args) {
+        ProductController prodController = new ProductController();
+        ArrayList<ProductModel> productList = new ArrayList();
+        ProductModel p = new ProductModel(06, 5, "Celular", 3500.00f, "Google Pixel XL" );
+        
+        productList = prodController.index();
+        productList.add(p);
+        
+        prodController.store(productList);
         
     }
 }
