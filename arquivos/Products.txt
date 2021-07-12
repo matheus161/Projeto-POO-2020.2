@@ -1,1 +1,1 @@
-[3;5;celular;0.5;celular]
+[0;5;Celular;1500.0;Samsung Galaxy, 1;2;Celular;3000.0;Iphone, 2;3;Acessorio;35.0;Fone Samsung]

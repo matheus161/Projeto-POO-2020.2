@@ -7,7 +7,7 @@ package Controller;
 
 /**
  *
- * @author Jota
+ * @author João Pedro
  */
 
 import java.io.FileOutputStream;
@@ -25,22 +25,18 @@ public class ProductController {
     public void store(ArrayList<ProductModel> product) {
         
         try {
-            
+            //Pegando o arquivos com os produotos
             String arquivo = "arquivos" +
                              System.getProperty("file.separator") +
                              "Products.txt";
             
             OutputStream os = new FileOutputStream(arquivo);
-        
-            /*
-             * A Classe ObjectOutputStream escreve os objetos no FileOutputStream
-             * */
             PrintStream ps = new PrintStream(os);
 
             // Gravando um produto no arquivo product.txt
             ps.print(product.toString());
-            ps.flush();
-            ps.close();
+            ps.flush(); //Força a escrita no buffers
+            ps.close(); //Fecha a Stream
         
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,12 +71,14 @@ public class ProductController {
     
     public ArrayList<ProductModel> index(){
         
+            productList.clear();    // Limpar a lista anterior para nao repeti-la
             
             ProductController pc = new ProductController();
-            String[] prod = new String[5];
+            String[] prod = new String[5]; // Recebe os parametros do produto
                     
-            String[] prods = pc.lerArquivo().split(",");
+            String[] prods = pc.lerArquivo().split(","); // Separa cada produto da String lida
             
+            //Criando objetos produto com a String lida
             for (int i=0; i<prods.length; i++){
                ProductModel pm = new ProductModel();
             prod = prods[i].split(";");
@@ -89,7 +87,7 @@ public class ProductController {
             pm.setAmount(Integer.parseInt(prod[1]));
             pm.setCategory(prod[2]);
             pm.setPrice(Float.parseFloat(prod[3]));
-            pm.setName(prod[4]);
+            pm.setName(prod[4].replace("]", ""));
                         
             productList.add(pm);}
             
