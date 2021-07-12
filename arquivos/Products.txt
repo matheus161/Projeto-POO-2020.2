@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [0;5;celular;0.5;celular], 1;5;Celular;4500.0;Galaxy S21+], 2;5;Celular;4500.0;Iphone 12], 6;5;Celular;3500.0;Google Pixel XL]
+=======
+[0;5;Celular;1500.0;Samsung Galaxy, 1;2;Celular;3000.0;Iphone, 2;3;Acessorio;35.0;Fone Samsung]
+>>>>>>> main
