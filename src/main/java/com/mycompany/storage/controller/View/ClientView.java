@@ -21,6 +21,7 @@ public class ClientView extends javax.swing.JFrame {
     
     ClientController clController = new ClientController();
     ArrayList<ClientModel> clientList = new ArrayList();
+    ArrayList<ClientModel> clientListDeleted = new ArrayList();
     
     public void LoadClientTable() {       
         
@@ -45,6 +46,36 @@ public class ClientView extends javax.swing.JFrame {
             clientList.get(i).getName(), clientList.get(i).getEmail(),
             clientList.get(i).getAddress(), sex, clientList.get(i).getCpf(),
             clientList.get(i).getTel(), clientList.get(i).getDate()};
+            model.addRow(rows);
+        }
+        
+        clientTable.setModel(model);
+    }
+    
+        
+    public void LoadClientDeletedTable() {       
+        
+        // Definindo as colunas da minha tabela
+        Object columns[] = {"ID","Nome","Email","Endereco","Sexo","CPF","Telefone",
+                           "Data Nascimento"};
+        
+        // Criando um modelo padrao
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        
+        clientListDeleted = clController.indexDeletedClient();
+        
+        // Dizendo o conteudo das minhas linhas a partir 
+        // das colunas e de cada elemento da minha lista 
+        String sex;
+        for(int i=0; i<clientListDeleted.size(); i++){
+            if (clientListDeleted.get(i).getSex() == 'M')
+                sex = "Masculino";
+            else sex = "Feminino";
+            
+            Object rows[] = new Object[]{clientListDeleted.get(i).getId(),
+            clientListDeleted.get(i).getName(), clientListDeleted.get(i).getEmail(),
+            clientListDeleted.get(i).getAddress(), sex, clientListDeleted.get(i).getCpf(),
+            clientListDeleted.get(i).getTel(), clientListDeleted.get(i).getDate()};
             model.addRow(rows);
         }
         
@@ -76,6 +107,8 @@ public class ClientView extends javax.swing.JFrame {
         clientTable = new javax.swing.JTable();
         btnUpdate = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
+        cbxClient = new javax.swing.JComboBox<>();
+        btnFilter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -158,6 +191,21 @@ public class ClientView extends javax.swing.JFrame {
             }
         });
 
+        cbxClient.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cadastrados", "Apagados" }));
+
+        btnFilter.setBackground(new java.awt.Color(102, 0, 102));
+        btnFilter.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
+        btnFilter.setText("Filtrar");
+        btnFilter.setBorder(null);
+        btnFilter.setContentAreaFilled(false);
+        btnFilter.setOpaque(true);
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -166,15 +214,20 @@ public class ClientView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnRegisterForm, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbxClient, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFilter)
+                        .addGap(120, 120, 120))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +237,9 @@ public class ClientView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnRegisterForm, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                        .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                        .addComponent(cbxClient, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFilter))
                     .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,6 +285,14 @@ public class ClientView extends javax.swing.JFrame {
         if (index < 0)
             JOptionPane.showMessageDialog(rootPane, "Selecione um cliente");
         
+        // Deserelizando as listas
+        clientListDeleted = clController.indexDeletedClient();
+        clientList = clController.index();
+        
+        // Adcionando o item que foi deletado na lista de deletados
+        clientListDeleted.add(clientList.get(index));
+        clController.storeDeletedClient(clientListDeleted);
+        
         // Remove da Lista
         clientList.remove(index);
         
@@ -239,6 +302,14 @@ public class ClientView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso");
         LoadClientTable();
     }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        if (cbxClient.getSelectedItem() == "Cadastrados"){
+            LoadClientTable();
+        } else {
+            LoadClientDeletedTable();
+        }
+    }//GEN-LAST:event_btnFilterActionPerformed
     
     /**
      * @param args the command line arguments
@@ -276,9 +347,11 @@ public class ClientView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnRegisterForm;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cbxClient;
     private javax.swing.JTable clientTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

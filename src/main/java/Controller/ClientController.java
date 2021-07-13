@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -21,6 +23,7 @@ import java.util.ArrayList;
  */
 public class ClientController {
     ArrayList<ClientModel> clientList = new ArrayList<ClientModel>();
+    ArrayList<ClientModel> clientListDeleted = new ArrayList<ClientModel>();
     
     public static void main(String[] args) {
             
@@ -35,6 +38,33 @@ public class ClientController {
              * escrita neste.
              * */
             FileOutputStream fos = new FileOutputStream("client.ser");
+
+            /*
+             * A Classe ObjectOutputStream escreve os objetos no FileOutputStream
+             * */
+
+            ObjectOutputStream oos = new ObjectOutputStream(fos); 
+            
+            // Gravando um objeto do tipo Client no arquivo client.ser
+            oos.writeObject(client);
+            
+            fos.close();
+            oos.close();
+            System.out.println("Done");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+        public void storeDeletedClient(ArrayList<ClientModel> client) {
+                
+        try {
+            /*
+             * A Classe FileOutputStream é responsável por criar
+             * o arquivo fisicamente no disco, assim poderemos realizar a
+             * escrita neste.
+             * */
+            FileOutputStream fos = new FileOutputStream("clientDeleted.ser");
 
             /*
              * A Classe ObjectOutputStream escreve os objetos no FileOutputStream
@@ -71,12 +101,37 @@ public class ClientController {
             fin.close();
             ois.close();
             return clientList;
-        } catch (IOException i) {
-            i.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return clientList;
+    }
+    
+        public ArrayList indexDeletedClient() {
+        //ArrayList<ClientModel> Clientlist = new ArrayList<ClientModel>();
         
-        return null;
+        try {
+            // Carrega o arquivo
+            FileInputStream fin = new FileInputStream("clientDeleted.ser");
+
+            // Responsavel por ler o arquivo
+            ObjectInputStream ois = new ObjectInputStream(fin);   
+            clientListDeleted = (ArrayList<ClientModel>)ois.readObject();
+            
+            //for(int i=0; i < clientList.size(); i++){;;
+                //System.out.println(clientList.get(i));
+            //}
+            
+            fin.close();
+            ois.close();
+            return clientListDeleted;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return clientListDeleted;
     }
 }

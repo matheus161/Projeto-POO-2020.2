@@ -21,7 +21,7 @@ public class ProductView extends javax.swing.JFrame {
     ProductController pController = new ProductController();
     ArrayList<ProductModel> productList = new ArrayList();
     
-    public void LoadProductTable() {
+    public void LoadProductTableStock() {
         // Definindo as colunas da minha tabela
         Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
         
@@ -37,11 +37,63 @@ public class ProductView extends javax.swing.JFrame {
         // Dizendo o conteudo das minhas linhas a partir 
         // das colunas e de cada elemento da minha lista 
         for(int i=0; i<productList.size(); i++){
+            if(productList.get(i).getAmount() > 0){
+                Object rows[] = new Object[]{productList.get(i).getId(),
+                productList.get(i).getName(), productList.get(i).getCategory(),
+                productList.get(i).getPrice(),productList.get(i).getAmount()};
+                model.addRow(rows);
+            }
+        }
+        productTable.setModel(model);
+    }
+    
+    public void LoadProductTableStockAll() {
+        // Definindo as colunas da minha tabela
+        Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
+        
+        // Criando um modelo padrao
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        
+        productList = pController.index();
+        if (productList == null){
             
+            return;
+        }
+        
+        // Dizendo o conteudo das minhas linhas a partir 
+        // das colunas e de cada elemento da minha lista 
+        for(int i=0; i<productList.size(); i++){
             Object rows[] = new Object[]{productList.get(i).getId(),
             productList.get(i).getName(), productList.get(i).getCategory(),
             productList.get(i).getPrice(),productList.get(i).getAmount()};
             model.addRow(rows);
+            
+        }
+        productTable.setModel(model);
+    }
+    
+    public void LoadProductTableNoStock() {
+        // Definindo as colunas da minha tabela
+        Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
+        
+        // Criando um modelo padrao
+        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        
+        productList = pController.index();
+        if (productList == null){
+            
+            return;
+        }
+        
+        // Dizendo o conteudo das minhas linhas a partir 
+        // das colunas e de cada elemento da minha lista 
+        for(int i=0; i<productList.size(); i++){
+            if(productList.get(i).getAmount() == 0){
+                Object rows[] = new Object[]{productList.get(i).getId(),
+                productList.get(i).getName(), productList.get(i).getCategory(),
+                productList.get(i).getPrice(),productList.get(i).getAmount()};
+                model.addRow(rows);
+            }
         }
         productTable.setModel(model);
     }
@@ -51,7 +103,7 @@ public class ProductView extends javax.swing.JFrame {
      */
     public ProductView() {
         initComponents();
-        LoadProductTable();
+        LoadProductTableStockAll();
     }
 
     /**
@@ -72,6 +124,8 @@ public class ProductView extends javax.swing.JFrame {
         productTable = new javax.swing.JTable();
         btnUpdate = new javax.swing.JButton();
         btnRemove = new javax.swing.JButton();
+        cbxStock = new javax.swing.JComboBox<>();
+        btnFilter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -162,6 +216,21 @@ public class ProductView extends javax.swing.JFrame {
             }
         });
 
+        cbxStock.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Em estoque", "Sem estoque" }));
+
+        btnFilter.setBackground(new java.awt.Color(102, 0, 102));
+        btnFilter.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
+        btnFilter.setText("Filtrar");
+        btnFilter.setBorder(null);
+        btnFilter.setContentAreaFilled(false);
+        btnFilter.setOpaque(true);
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -177,6 +246,10 @@ public class ProductView extends javax.swing.JFrame {
                         .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(72, 72, 72)
+                        .addComponent(cbxStock, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -188,8 +261,10 @@ public class ProductView extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
                     .addComponent(btnRegisterForm, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -227,24 +302,24 @@ public class ProductView extends javax.swing.JFrame {
     private void btnRegisterFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterFormActionPerformed
         btnChoose = 0;
         new ProductForm(this, true).setVisible(true);
-        LoadProductTable();
+        LoadProductTableStock();
     }//GEN-LAST:event_btnRegisterFormActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         index = productTable.getSelectedRow();
         btnChoose = 1;
         if (index < 0)
-        JOptionPane.showMessageDialog(rootPane, "Selecione um produto");
+            JOptionPane.showMessageDialog(null, "Selecione um produto");
         else
-        new ProductForm(this, true).setVisible(true);
-        LoadProductTable();
+            new ProductForm(this, true).setVisible(true);
+        LoadProductTableStockAll();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
         index = productTable.getSelectedRow();
         btnChoose = 1;
         if (index < 0)
-        JOptionPane.showMessageDialog(rootPane, "Selecione um produto");
+        JOptionPane.showMessageDialog(null, "Selecione um produto");
 
         // Remove da Lista
         productList.remove(index);
@@ -252,9 +327,19 @@ public class ProductView extends javax.swing.JFrame {
         // Salvando o arquivo com a lista sem aquela posicao
         pController.store(productList);
 
-        JOptionPane.showMessageDialog(rootPane, "Excluido com sucesso");
-        LoadProductTable();
+        JOptionPane.showMessageDialog(null, "Excluido com sucesso");
+        LoadProductTableStock();
     }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        if (cbxStock.getSelectedItem() == "Em estoque"){
+            LoadProductTableStock();
+        } else if (cbxStock.getSelectedItem() == "Sem estoque") {
+            LoadProductTableNoStock();
+        } else {
+            LoadProductTableStockAll();
+        }
+    }//GEN-LAST:event_btnFilterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -292,9 +377,11 @@ public class ProductView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnRegisterForm;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cbxStock;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

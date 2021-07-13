@@ -26,26 +26,7 @@ public class SaleController {
     ArrayList<SaleModel> saleList = new ArrayList<SaleModel>();
     
     public static void main(String[] args) {
-        ArrayList<SaleModel> saleList = new ArrayList<>();
-        ArrayList<ClientModel> clientList = new ArrayList<>();
-        ArrayList<ProductModel> productList = new ArrayList<>();
-        SaleController saleController = new SaleController();
-        ProductController pController = new ProductController();
-        ClientController clController = new ClientController();
         
-        clientList = clController.index();
-        productList = pController.index();
-        
-        //SaleModel sale = new SaleModel("12/07/2021", 2 , 20d, clientList.get(0).getName(), productList.get(0).getName());
-        //saleList.add(sale);
-        
-        saleController.store(saleList);
-        ArrayList<SaleModel> saleList2 = new ArrayList<>();
-        saleList2 = saleController.index();
-        
-        for (int i=0; i < saleList2.size(); i++){
-            System.out.print(saleList2.get(i));
-        }
     }
     
     public void store(ArrayList<SaleModel> sale) {
@@ -78,16 +59,12 @@ public class SaleController {
     public ArrayList index() {
         try {
             // Carrega o arquivo
-            FileInputStream fin = new FileInputStream("client.ser");
+            FileInputStream fin = new FileInputStream("store.ser");
 
             // Responsavel por ler o arquivo
             ObjectInputStream ois = new ObjectInputStream(fin);   
             saleList = (ArrayList<SaleModel>)ois.readObject();
-            
-            //for(int i=0; i < clientList.size(); i++){;;
-                //System.out.println(clientList.get(i));
-            //}
-            
+
             fin.close();
             ois.close();
             return saleList;            

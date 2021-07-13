@@ -69,6 +69,7 @@ public class ProductController {
         return null;
     }
     
+    // Try...Catch aqui
     public ArrayList<ProductModel> index(){
         
             productList.clear();    // Limpar a lista anterior para nao repeti-la

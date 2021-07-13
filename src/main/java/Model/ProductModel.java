@@ -67,6 +67,10 @@ public class ProductModel {
         this.amount = amount;
     }
     
+    public void sell(int quantity){
+        setAmount(getAmount() - quantity);
+    }
+    
     @Override
     public String toString(){
         return  this.getId() + ";" + this.getAmount() 

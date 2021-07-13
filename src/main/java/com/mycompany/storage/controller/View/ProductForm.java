@@ -42,7 +42,8 @@ public class ProductForm extends javax.swing.JDialog {
             ArrayList<ProductModel> list = pController.index();
 
             nameTxt.setText(list.get(ProductView.index).getName());
-            categoryTxt.setText(list.get(ProductView.index).getCategory());
+            cbxCategory.setSelectedItem(list.get(ProductView.index).getCategory());
+            //cbxCategory.setText(list.get(ProductView.index).getCategory());
             priceTxt.setText(Float.toString(list.get(ProductView.index).getPrice()));
             qntdTxt.setText(Integer.toString(list.get(ProductView.index).getAmount()));
         }
@@ -58,8 +59,8 @@ public class ProductForm extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Preencha o nome corretamente");
             return 0;
         }
-        if (categoryTxt.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha a categoria corretamente");
+        if (cbxCategory.getSelectedItem() == "Selecione") {
+            JOptionPane.showMessageDialog(null, "Escolha uma categoria");
             return 0;
         }
         if (priceTxt.getText().equals("")) {
@@ -97,13 +98,13 @@ public class ProductForm extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         nameTxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        categoryTxt = new javax.swing.JTextField();
         qntdTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         priceTxt = new javax.swing.JTextField();
+        cbxCategory = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -142,9 +143,6 @@ public class ProductForm extends javax.swing.JDialog {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 0, 102));
         jLabel3.setText("Categoria:");
-
-        categoryTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        categoryTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
 
         qntdTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         qntdTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
@@ -186,6 +184,9 @@ public class ProductForm extends javax.swing.JDialog {
         priceTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         priceTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
 
+        cbxCategory.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cbxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Celulares", "Cases", "Peliculas", "Audio" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -202,7 +203,7 @@ public class ProductForm extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(categoryTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbxCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -223,9 +224,9 @@ public class ProductForm extends javax.swing.JDialog {
                     .addComponent(nameTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(categoryTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -238,7 +239,7 @@ public class ProductForm extends javax.swing.JDialog {
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 6, Short.MAX_VALUE))
+                .addGap(6, 6, 6))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -280,7 +281,7 @@ public class ProductForm extends javax.swing.JDialog {
     private ProductModel fillDataForm() {
         // Preenchendo um objeto do tipo Product
         ProductModel product = new ProductModel(generateID(), Integer.parseInt(qntdTxt.getText()),
-        categoryTxt.getText(), Float.parseFloat(priceTxt.getText()), nameTxt.getText());
+        cbxCategory.getSelectedItem().toString(), Float.parseFloat(priceTxt.getText()), nameTxt.getText());
         
         return product;
     }
@@ -331,7 +332,6 @@ public class ProductForm extends javax.swing.JDialog {
 
             // Passando o id do cliente atual
             product.setId(productList.get(ProductView.index).getId());
-
             // Com um objeto preenchido eu passo o que eu preciso para
             // o objeto naquela determinada posicao da lista de produtos
             productList.get(ProductView.index).setName(product.getName());
@@ -395,7 +395,7 @@ public class ProductForm extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSave;
-    private javax.swing.JTextField categoryTxt;
+    private javax.swing.JComboBox<String> cbxCategory;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

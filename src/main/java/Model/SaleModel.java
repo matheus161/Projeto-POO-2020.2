@@ -13,15 +13,13 @@ import java.util.Date;
  * @author Matheus
  */
 public class SaleModel implements Serializable {
-    private int id;
     private Date date;
     private int quantity;
     private double value;
     private String client;
     private String product;
 
-    public SaleModel(int id, Date date, int quantity, double value, String client, String product) {
-        this.id = id;
+    public SaleModel( Date date, int quantity, double value, String client, String product) {
         this.date = date;
         this.quantity = quantity;
         this.value = value;
@@ -72,14 +70,4 @@ public class SaleModel implements Serializable {
     public void setProduct(String product) {
         this.product = product;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    
 }
