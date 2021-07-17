@@ -1,1 +1,1 @@
-[0;0;Celulares;1500.0;Samsung Galaxy A30, 1;0;Celulares;350.0;Xiami MI Band, 2;0;Audio;35.0;Fone Samsung, 3;6;Celulares;8999.0;Iphone 12 Pro Max 256 GB, 4;12;Cases;20.0;Capa Silicone IPHONE 12, 5;6;Audio;640.0;Hyperx Cloud Core 7.1]
+[0;50;Celulares;8999.0;IPHONE 12 PRO MAX 256GB, 1;20;Audio;699.0;Hyperx Cloud Core 7.1, 2;20;Celulares;6500.0;Samsung Galaxy S21+, 3;150;Cases;65.0;Case IPHONE 12, 4;60;Celulares;4500.0;REDMI Note 5G, 5;0;Celulares;3500.0;IPHONE 7 PLUS]
