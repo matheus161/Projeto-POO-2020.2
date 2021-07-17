@@ -6,32 +6,24 @@
 package com.mycompany.storage.controller.View;
 
 import Controller.ClientController;
+import Intefaces.Form;
 import Model.ClientModel;
 import javax.swing.JOptionPane;
-import javax.swing.text.MaskFormatter;
-import com.mycompany.storage.controller.View.ClientView;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JFormattedTextField;
 
 /**
  *
  * @author Matheus
  */
-public class ClientForm extends javax.swing.JDialog {
+public class ClientForm extends javax.swing.JDialog implements Form {
     ClientController clController = new ClientController();
     ArrayList<ClientModel> clientList = new ArrayList();
     
     
-    /**
-     * Creates new form ClientForm
-     */
     public ClientForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -113,9 +105,10 @@ public class ClientForm extends javax.swing.JDialog {
         }
     }
     
-    private int isValidFields(){
+    @Override
+    public int isValidFields(){
         // Verifico se o nome esta vazio ou passui numeros
-        if (!nameTxt.getText().matches("[^0-9]") & nameTxt.getText().matches("^\\d+$")){
+        if (!nameTxt.getText().matches("^([ \\u00c0-\\u01ffa-zA-Z'\\-])+$") ){
             JOptionPane.showMessageDialog(null, "Preencha o nome corretamente");
             return 0;
         }
@@ -403,7 +396,8 @@ public class ClientForm extends javax.swing.JDialog {
         return 'F';
     }
     
-    private int generateID(){
+    @Override
+    public int generateID(){
         // Pegando a lista deserializada
         ArrayList<ClientModel> list = clController.index();
         
@@ -425,7 +419,8 @@ public class ClientForm extends javax.swing.JDialog {
     
     private ClientModel fillDataForm() {
         // Preenchendo um objeto do tipo Client
-        ClientModel client = new ClientModel(generateID(), nameTxt.getText(), emailTxt.getText(),
+        ClientModel client = new ClientModel(generateID(), 
+        nameTxt.getText(), emailTxt.getText(),
         enderecoTxt.getText(), getSex(), cpfTxt.getText(), telTxt.getText(),
         bornDateTxt.getText());
         

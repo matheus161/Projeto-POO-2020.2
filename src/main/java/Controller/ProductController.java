@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controller;
 
 /**
@@ -10,18 +5,28 @@ package Controller;
  * @author João Pedro
  */
 
-import java.io.FileOutputStream;
+import Intefaces.Controller;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import Model.ProductModel;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class ProductController {
+
+public class ProductController implements Controller {
     ArrayList<ProductModel> productList = new ArrayList<ProductModel>();
     
+    /**
+     *
+     * @param product
+     */
     public void store(ArrayList<ProductModel> product) {
         
         try {
@@ -38,7 +43,7 @@ public class ProductController {
             ps.flush(); //Força a escrita no buffers
             ps.close(); //Fecha a Stream
         
-        } catch (Exception e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -63,15 +68,17 @@ public class ProductController {
             
             return baos.toString();
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        
         return null;
     }
     
-    // Try...Catch aqui
+    @Override
     public ArrayList<ProductModel> index(){
         
+        try{
             productList.clear();    // Limpar a lista anterior para nao repeti-la
             
             ProductController pc = new ProductController();
@@ -92,12 +99,12 @@ public class ProductController {
                         
             productList.add(pm);}
             
-            return productList;            
-    }
+            return productList;
+        }catch (ArrayIndexOutOfBoundsException e) {
+            Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return productList;}
     
-    public static void main(String[] args) {
-        
-    }
 }
 
 

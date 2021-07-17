@@ -5,11 +5,13 @@
  */
 package Model;
 
+import Intefaces.Product;
+
 /**
  *
  * @author João Pedro
  */
-public class ProductModel {
+public class ProductModel implements Product {
     private int id;
     private String name;
     private String category;
@@ -40,7 +42,7 @@ public class ProductModel {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.replaceAll("\\^([0-9]+)", "");
     }
 
     public String getCategory() {
@@ -67,6 +69,7 @@ public class ProductModel {
         this.amount = amount;
     }
     
+    @Override
     public void sell(int quantity){
         setAmount(getAmount() - quantity);
     }

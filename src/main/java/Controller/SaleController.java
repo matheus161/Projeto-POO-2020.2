@@ -5,8 +5,7 @@
  */
 package Controller;
 
-import Model.ClientModel;
-import Model.ProductModel;
+import Intefaces.Controller;
 import Model.SaleModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,7 +21,7 @@ import java.util.logging.Logger;
  *
  * @author Matheus
  */
-public class SaleController {
+public class SaleController implements Controller {
     ArrayList<SaleModel> saleList = new ArrayList<SaleModel>();
     
     public static void main(String[] args) {
@@ -56,6 +55,7 @@ public class SaleController {
         }
     }
     
+    @Override
     public ArrayList index() {
         try {
             // Carrega o arquivo

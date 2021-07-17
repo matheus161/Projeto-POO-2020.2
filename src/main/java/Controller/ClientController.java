@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import Intefaces.Controller;
 import Model.ClientModel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author Matheus
  */
-public class ClientController {
+public class ClientController implements Controller {
     ArrayList<ClientModel> clientList = new ArrayList<ClientModel>();
     ArrayList<ClientModel> clientListDeleted = new ArrayList<ClientModel>();
     
@@ -83,6 +84,7 @@ public class ClientController {
         }
     }
     
+    @Override
     public ArrayList index() {
         //ArrayList<ClientModel> Clientlist = new ArrayList<ClientModel>();
         

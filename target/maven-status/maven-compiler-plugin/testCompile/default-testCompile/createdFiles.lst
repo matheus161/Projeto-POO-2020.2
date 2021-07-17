@@ -1,0 +1,5 @@
+ModelTests\ProductModelSettersTest.class
+ModelTests\ProductModelGettersTest.class
+ModelTests\ProductModelSellTest.class
+ModelTests\PersonModelSettersTest.class
+ModelTests\PersonModelSettersTest$PersonModelImpl.class

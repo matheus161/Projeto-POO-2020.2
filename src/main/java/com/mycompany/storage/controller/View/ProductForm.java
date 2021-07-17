@@ -6,25 +6,16 @@
 package com.mycompany.storage.controller.View;
 
 import Controller.ProductController;
+import Intefaces.Form;
 import Model.ProductModel;
 import javax.swing.JOptionPane;
-import javax.swing.text.MaskFormatter;
-import com.mycompany.storage.controller.View.ProductView;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.JFormattedTextField;
 
 /**
  *
  * @author João Pedro e Matheus
  */
-public class ProductForm extends javax.swing.JDialog {
+public class ProductForm extends javax.swing.JDialog implements Form{
     ProductController pController = new ProductController();
     ArrayList<ProductModel> productList = new ArrayList();
     
@@ -49,7 +40,8 @@ public class ProductForm extends javax.swing.JDialog {
         }
     }
     
-    private int isValidFields(){
+    @Override
+    public int isValidFields(){
         // Verifico se o nome esta vazio ou passui numeros
         if (!nameTxt.getText().matches("[^0-9]") & nameTxt.getText().matches("^\\d+$")){
             JOptionPane.showMessageDialog(null, "Preencha o nome corretamente");
@@ -63,25 +55,10 @@ public class ProductForm extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Escolha uma categoria");
             return 0;
         }
-        if (priceTxt.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha o preco corretamente");
-            return 0;
-        }
-        if (qntdTxt.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Preencha a quantidade corretamente");
-            return 0;
-        }
+        
         return 1;
     }
-    
-    private boolean isValidAmount(){
-        try {
-        String qntd = qntdTxt.getText();
-        return qntd != null && qntd.matches("[0-9]*");
-        } catch (Exception e) {
-            return false;
-        }        
-    }    
+       
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,15 +75,16 @@ public class ProductForm extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         nameTxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        qntdTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         btnSave = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        priceTxt = new javax.swing.JTextField();
         cbxCategory = new javax.swing.JComboBox<>();
+        priceTxt = new javax.swing.JFormattedTextField();
+        qntdTxt = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setIconImage(null);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -144,9 +122,6 @@ public class ProductForm extends javax.swing.JDialog {
         jLabel3.setForeground(new java.awt.Color(102, 0, 102));
         jLabel3.setText("Categoria:");
 
-        qntdTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        qntdTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 0, 102));
         jLabel4.setText("Preco(R$):");
@@ -181,11 +156,16 @@ public class ProductForm extends javax.swing.JDialog {
             }
         });
 
-        priceTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        priceTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
-
         cbxCategory.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cbxCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione", "Celulares", "Cases", "Peliculas", "Audio" }));
+
+        priceTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
+        priceTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        priceTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+
+        qntdTxt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 0, 102), 2));
+        qntdTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        qntdTxt.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -229,12 +209,12 @@ public class ProductForm extends javax.swing.JDialog {
                     .addComponent(cbxCategory))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(priceTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(priceTxt))
                 .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(qntdTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(qntdTxt))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -256,9 +236,11 @@ public class ProductForm extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private int generateID(){
+    @Override
+    public int generateID(){
         // Pegando a lista deserializada
         ArrayList<ProductModel> list = pController.index();
         
@@ -280,8 +262,11 @@ public class ProductForm extends javax.swing.JDialog {
     
     private ProductModel fillDataForm() {
         // Preenchendo um objeto do tipo Product
-        ProductModel product = new ProductModel(generateID(), Integer.parseInt(qntdTxt.getText()),
-        cbxCategory.getSelectedItem().toString(), Float.parseFloat(priceTxt.getText()), nameTxt.getText());
+        ProductModel product = new ProductModel(generateID(), 
+        
+        Integer.parseInt(qntdTxt.getText().replace(".","")),
+        cbxCategory.getSelectedItem().toString(),
+        Float.parseFloat(priceTxt.getText().replace(",", ".")), nameTxt.getText());
         
         return product;
     }
@@ -292,7 +277,7 @@ public class ProductForm extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-
+        try{
         // Criando o objeto que sera preenchido
         ProductModel product = new ProductModel();
 
@@ -302,12 +287,6 @@ public class ProductForm extends javax.swing.JDialog {
 
         // Verificando campos
         if (isValidFields() == 0){
-            return;
-        }
-        
-        // Verificando a quantidade
-        if (isValidAmount() == false){
-            JOptionPane.showMessageDialog(null, "Preencha uma quantidade valida");
             return;
         }
 
@@ -345,8 +324,9 @@ public class ProductForm extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Produto atualizado com sucesso");
 
             // Fechando o formulario e destruindo o objeto
-            closeForm();
-
+            closeForm();}
+        }catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Preencha os dados corretamente");
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -404,8 +384,8 @@ public class ProductForm extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField nameTxt;
-    private javax.swing.JTextField priceTxt;
-    private javax.swing.JTextField qntdTxt;
+    private javax.swing.JFormattedTextField priceTxt;
+    private javax.swing.JFormattedTextField qntdTxt;
     // End of variables declaration//GEN-END:variables
 }
 

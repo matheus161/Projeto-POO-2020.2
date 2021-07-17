@@ -22,20 +22,19 @@ public abstract class PersonModel implements Serializable {
     private String date;
 
     public PersonModel(int id, String name, String email, String address, char sex, String cpf, String tel, String date) {
-        this.setId(id);
-        this.setName(name);
-        this.setEmail(email);
-        this.setAddress(address);
-        this.setSex(sex);
-        this.setCpf(cpf);
-        this.setTel(tel);
-        this.setDate(date);
-    }
-    
-    public PersonModel(){
-        
-    }
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.sex = sex;
+        this.cpf = cpf;
+        this.tel = tel;
+        this.date = date;
+    }    
 
+    public PersonModel() {
+    }    
+    
     public int getId() {
         return id;
     }

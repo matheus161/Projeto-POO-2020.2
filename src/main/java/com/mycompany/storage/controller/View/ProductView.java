@@ -22,6 +22,7 @@ public class ProductView extends javax.swing.JFrame {
     ArrayList<ProductModel> productList = new ArrayList();
     
     public void LoadProductTableStock() {
+        try{
         // Definindo as colunas da minha tabela
         Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
         
@@ -44,11 +45,15 @@ public class ProductView extends javax.swing.JFrame {
                 model.addRow(rows);
             }
         }
-        productTable.setModel(model);
+        productTable.setModel(model);}
+        catch(Exception ex){
+            
+        }
     }
     
     public void LoadProductTableStockAll() {
         // Definindo as colunas da minha tabela
+        try{
         Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
         
         // Criando um modelo padrao
@@ -69,10 +74,14 @@ public class ProductView extends javax.swing.JFrame {
             model.addRow(rows);
             
         }
-        productTable.setModel(model);
+        productTable.setModel(model);}
+        catch(Exception ex){
+            
+        }
     }
     
     public void LoadProductTableNoStock() {
+        try{
         // Definindo as colunas da minha tabela
         Object columns[] = {"ID","Nome","Categoria","Preco(R$)","Quantidade"};
         
@@ -95,7 +104,10 @@ public class ProductView extends javax.swing.JFrame {
                 model.addRow(rows);
             }
         }
-        productTable.setModel(model);
+        productTable.setModel(model);}
+        catch(Exception ex){
+            
+        }
     }
     
     /**
@@ -302,7 +314,7 @@ public class ProductView extends javax.swing.JFrame {
     private void btnRegisterFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterFormActionPerformed
         btnChoose = 0;
         new ProductForm(this, true).setVisible(true);
-        LoadProductTableStock();
+        LoadProductTableStockAll();
     }//GEN-LAST:event_btnRegisterFormActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -328,7 +340,7 @@ public class ProductView extends javax.swing.JFrame {
         pController.store(productList);
 
         JOptionPane.showMessageDialog(null, "Excluido com sucesso");
-        LoadProductTableStock();
+        LoadProductTableStockAll();
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed

@@ -9,6 +9,7 @@ com\mycompany\storage\controller\View\SaleView$8.class
 com\mycompany\storage\controller\View\SaleView$5.class
 com\mycompany\storage\controller\View\ProductView$2.class
 com\mycompany\storage\controller\View\ClientForm$3.class
+Intefaces\Product.class
 com\mycompany\storage\controller\View\ProductForm.class
 Model\ProductModel.class
 com\mycompany\storage\controller\View\ClientForm$3$1.class
@@ -19,6 +20,7 @@ Model\SaleModel.class
 com\mycompany\storage\controller\View\ClientView$1.class
 com\mycompany\storage\controller\View\ClientView$6.class
 com\mycompany\storage\controller\View\ProductView$5.class
+Intefaces\Controller.class
 com\mycompany\storage\controller\View\SaleView$2.class
 com\mycompany\storage\controller\View\ClientForm.class
 com\mycompany\storage\controller\View\ClientView$3.class
@@ -26,6 +28,7 @@ com\mycompany\storage\controller\View\SaleView$7.class
 com\mycompany\storage\controller\View\ProductView$6.class
 Controller\ClientController.class
 Model\ClientModel.class
+Intefaces\Form.class
 com\mycompany\storage\controller\View\ClientForm$2.class
 com\mycompany\storage\controller\View\ProductForm$1.class
 com\mycompany\storage\controller\View\SaleView$4.class
